@@ -1,15 +1,23 @@
-import Link from 'next/link'
-import Layout from '../components/Layout'
+import { signIn, signOut, useSession } from 'next-auth/client';
 
-const IndexPage = () => (
-  <Layout title="Home | Next.js + TypeScript Example">
-    <h1>Hello Next.js 👋</h1>
-    <p>
-      <Link href="/about">
-        <a>About</a>
-      </Link>
-    </p>
-  </Layout>
-)
+const IndexPage = () => {
+  const [ session, loading ] = useSession()
+  return (
+    <>
+      {!session && (
+        <>
+          <p>Not signed in</p>
+          <button onClick={() => signIn()}>Sign in</button>
+        </>
+      )}
+      {session && (
+        <>
+          <p>Signed in as {session.user.email}</p>
+          <button onClick={() => signOut()}>signOut</button>
+        </>
+      )}
+    </>
+  )
+}
 
 export default IndexPage

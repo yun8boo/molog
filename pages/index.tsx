@@ -1,4 +1,5 @@
 import { signIn, signOut, useSession } from 'next-auth/client';
+import Hoge from '../src/components/Hoge'
 
 const IndexPage = () => {
   const [ session, loading ] = useSession()
@@ -8,6 +9,7 @@ const IndexPage = () => {
         <>
           <p>Not signed in</p>
           <button onClick={() => signIn()}>Sign in</button>
+          <Hoge />
         </>
       )}
       {session && (

@@ -8,10 +8,13 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "autoprefixer": "^10.2.6",
     "next": "latest",
     "next-auth": "^3.25.0",
+    "postcss": "^8.3.0",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "tailwindcss": "^2.1.4"
   },
   "devDependencies": {
     "@types/node": "^12.12.21",

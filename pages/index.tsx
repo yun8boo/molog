@@ -1,31 +1,21 @@
-import { signIn, signOut, useSession } from 'next-auth/client';
+import Link from 'next/link';
+import { useForm } from 'react-hook-form';
 
 const IndexPage = () => {
-  const [ session, loading ] = useSession()
-  console.log(session);
-  const post = async() => {
-    const url = '/api/movie_logs'
-    const body = {
-      title: 'ユージュアル・サスペクツ',
-      body: '面白かった'
-    }
-    await fetch(url, {method: 'POST', body: JSON.stringify(body)})
+  const {register, handleSubmit} = useForm()
+  const onSubmit = (data) => {
+    console.log(data);
   }
   return (
-    <>
-      {!session && (
-        <div className='flex  flex-col items-center justify-center h-screen'>
-          <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded shadow' onClick={() => signIn('google')}>Sign in with Google</button>
-        </div>
-      )}
-      {session && (
-        <>
-          <p>Signed in as {session.user.id}</p>
-          <p><button onClick={post}>post</button></p>
-          <button onClick={() => signOut()}>signOut</button>
-        </>
-      )}
-    </>
+    <div className='flex flex-col items-center p-6'>
+      <Link href='/movieLogs'><a>movie_logs</a></Link>
+      <h1>Logを残す</h1>
+      <form className='flex flex-col' onSubmit={handleSubmit(onSubmit)}>
+        <input {...register("title")} placeholder="title" />
+        <input {...register("body")} placeholder="body" />
+        <input type="submit" />
+      </form>
+    </div>
   )
 }
 

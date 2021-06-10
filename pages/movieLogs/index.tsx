@@ -1,10 +1,11 @@
 import { useSession } from 'next-auth/client';
 import { useState, useEffect } from 'react';
-import MovieLogList from '../src/components/MovieLogList';
+import MovieLogList from '../../src/components/MovieLogList';
+import { MovieLogType } from '../../src/interfaces/movieLog';
 
 const MovieLogs = () => {
   const [session] = useSession();
-  const [content, setContent] = useState([]);
+  const [movieLogs, setMovieLogs] = useState<MovieLogType[]>([]);
 
   useEffect(() => {
     const fetchData = async() => {
@@ -15,20 +16,18 @@ const MovieLogs = () => {
         }
         const json = await res.json()
         if(json) {
-          setContent(json)
+          setMovieLogs(json)
         } 
       } catch (error) {
-        console.log('サインインしてね');
+        console.log(error.message);
       }
     }
     fetchData()
   }, [session])
 
-  console.log(content);
-
   return (
     <div>
-      <MovieLogList />
+      <MovieLogList movieLogs={movieLogs} />
     </div>
   )
 }

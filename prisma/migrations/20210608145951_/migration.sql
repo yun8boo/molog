@@ -1,0 +1,9 @@
+-- CreateTable
+CREATE TABLE "MovieLog" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "body" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "userId" TEXT NOT NULL,
+    FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);

@@ -5,6 +5,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
+    "prisma-studio": "npx prisma studio",
     "type-check": "tsc"
   },
   "dependencies": {

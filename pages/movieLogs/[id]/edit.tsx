@@ -10,10 +10,7 @@ const EditPage = () => {
       mutate(`/api/movie_logs/${id}`, async logs => {
         console.log({logs});
         const body = JSON.stringify(data)
-        const updateLogs = await fetch('/api/movie_logs', {method: 'PATCH', body});
-        const filteredLogs = logs.filter(log => log.id !== id)
-        console.log({filteredLogs});
-        return [...filteredLogs, updateLogs]
+        await fetch(`/api/movie_logs/${id}`, {method: 'PATCH', body});
       })
     }catch {
       console.log('error');

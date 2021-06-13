@@ -37,11 +37,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if(req.method === 'DELETE') {
-    const updateMovieLog = await prisma.movieLog.delete({
-      where: {
-        id: id as string
-      },
-    })
-    res.status(201).json(updateMovieLog);
+    try {
+      const deleteMovieLog = await prisma.movieLog.delete({
+        where: {
+          id: id as string
+        },
+      })
+      res.status(201).end('success'); 
+    } catch (error) {
+      res.status(500).end()
+    }
   }
 }

@@ -4,12 +4,11 @@ import { mutate } from 'swr';
 
 const IndexPage = () => {
   const {register, handleSubmit} = useForm()
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     try {
-      mutate('/api/movie_logs', logs => {
-        const body = JSON.stringify(data)
-        fetch('/api/movie_logs', {method: 'POST', body});
-      })
+      const body = JSON.stringify(data)
+      await fetch('/api/movie_logs', {method: 'POST', body});
+      mutate('/api/movie_logs')
     }catch {
       console.log('error');
     }

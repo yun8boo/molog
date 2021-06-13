@@ -1,16 +1,24 @@
 import Link from 'next/link';
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import { MovieLogType } from '../../../src/interfaces/movieLog';
 
 const fetcher = (...args) => fetch(`/api/movie_logs/${args[0]}`).then(res => res.json())
 
 const MovieLog = () => {
-  const { id } = useRouter().query
+  const router = useRouter()
+  const { id } = router.query
   const { data, error } = useSWR<MovieLogType | undefined>(`/api/movie_logs/${id}`, () => fetcher(id))
-  const handleDelete = () => {
-    console.log('delete');
+  console.log({data, error});
+  
+  const handleDelete = async () => {
+    try {
+      await fetch(`/api/movie_logs/${id}`, {method: 'DELETE'})
+      mutate(`/api/movie_logs/${id}`)
+    }catch {
+      console.log('error');
+    }    
   }
 
   if(error) return <p>error page</p>

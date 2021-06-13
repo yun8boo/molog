@@ -1,12 +1,18 @@
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
+import { mutate } from 'swr';
 
 const IndexPage = () => {
   const {register, handleSubmit} = useForm()
   const onSubmit = (data) => {
-    console.log(data);
-    const body = JSON.stringify(data)
-    fetch('/api/movie_logs', {method: 'POST', body});
+    try {
+      mutate('/api/movie_logs', logs => {
+        const body = JSON.stringify(data)
+        fetch('/api/movie_logs', {method: 'POST', body});
+      })
+    }catch {
+      console.log('error');
+    }
   }
   return (
     <div className='flex flex-col items-center p-6'>

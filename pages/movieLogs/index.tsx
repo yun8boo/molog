@@ -1,33 +1,20 @@
-import { useSession } from 'next-auth/client';
-import { useState, useEffect } from 'react';
+import useSWR from 'swr';
 import MovieLogList from '../../src/components/MovieLogList';
 import { MovieLogType } from '../../src/interfaces/movieLog';
 
-const MovieLogs = () => {
-  const [session] = useSession();
-  const [movieLogs, setMovieLogs] = useState<MovieLogType[]>([]);
+const fetcher = (...args) => fetch('/api/movie_logs').then(res => res.json());
 
-  useEffect(() => {
-    const fetchData = async() => {
-      try {
-        const res = await fetch('/api/movie_logs');
-        if(!res.ok) {
-          throw new Error
-        }
-        const json = await res.json()
-        if(json) {
-          setMovieLogs(json)
-        } 
-      } catch (error) {
-        console.log(error.message);
-      }
-    }
-    fetchData()
-  }, [session])
+const MovieLogs = () => {
+  const { data, error } = useSWR<MovieLogType[] | undefined>('/api/movie_logs', fetcher)
+  console.log(data);
+
+  if(error)return <p>error page</p>
+
+  if(!data) return <p>loading...</p>
 
   return (
     <div>
-      <MovieLogList movieLogs={movieLogs} />
+      <MovieLogList movieLogs={data} />
     </div>
   )
 }

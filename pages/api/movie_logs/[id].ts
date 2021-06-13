@@ -23,6 +23,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if(req.method === 'PATCH') {
     const { title, body } = JSON.parse(req.body)
+    console.log({title, body});
     const updateMovieLog = await prisma.movieLog.update({
       where: {
         id: id as string

@@ -7,8 +7,10 @@ interface Props {
 }
 
 const MovieLogList = ({movieLogs}: Props) => {
+  console.log('MovieLogList', movieLogs);
+  
   return (
-    <ul className='flex m-6'>
+    <ul className='flex flex-wrap m-6'>
       {movieLogs.map(movieLog => {
         return (
           <li className='mx-4 sm:w-1/2 md:w-1/3 lg:w-1/4' key={movieLog.id}>

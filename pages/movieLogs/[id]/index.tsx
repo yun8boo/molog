@@ -10,12 +10,11 @@ const MovieLog = () => {
   const router = useRouter()
   const { id } = router.query
   const { data, error } = useSWR<MovieLogType | undefined>(`/api/movie_logs/${id}`, () => fetcher(id))
-  console.log({data, error});
-  
   const handleDelete = async () => {
     try {
-      await fetch(`/api/movie_logs/${id}`, {method: 'DELETE'})
-      mutate(`/api/movie_logs/${id}`)
+      await fetch(`/api/movie_logs/${id}`, {method: 'DELETE'});
+      router.push('/movieLogs');
+      return undefined
     }catch {
       console.log('error');
     }    

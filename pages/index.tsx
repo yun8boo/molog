@@ -20,7 +20,7 @@ const IndexPage = () => {
       <form className='flex flex-col' onSubmit={handleSubmit(onSubmit)}>
         <input {...register("title")} placeholder="title" />
         <input {...register("body")} placeholder="body" />
-        <input type="submit" />
+        <input type="submit" className='cursor-pointer' />
       </form>
     </div>
   )

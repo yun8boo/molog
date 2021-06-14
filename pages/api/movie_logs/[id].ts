@@ -11,14 +11,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const userId = session.user.id;
   const { id } = req.query
 
+  console.log('method', req.method);
+
   if(req.method === 'GET') {
-    const movieLog = await prisma.movieLog.findUnique({
-      where: {
-        id: id as string
+    try {
+      const movieLog = await prisma.movieLog.findUnique({
+        where: {
+          id: id as string
+        }
+      })
+      if(!movieLog) {
+        res.status(404).json(null); 
       }
-    })
-    console.log(movieLog);
-    res.status(201).json(movieLog);
+      res.status(201).json(movieLog); 
+    } catch (error) {
+      console.log('error', error);
+    }
   }
 
   if(req.method === 'PATCH') {

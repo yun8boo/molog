@@ -8,5 +8,6 @@ movie log
 - Database: SQL / @prisma
 - Authentication: @nextauthjs
 - Styling: @tailwindcss
+- Data fetching: @swr
 - Language: @typescript
 - Deployment: @vercel

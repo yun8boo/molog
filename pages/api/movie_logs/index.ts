@@ -20,11 +20,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if(req.method === 'POST') {
-    const { title, body } = JSON.parse(req.body)
+    const { title, body, imgSrc } = JSON.parse(req.body)
     const createMovieLog = await prisma.movieLog.create({
       data: {
         body,
         title,
+        imgSrc,
         user: {
           connect: {
             id: userId

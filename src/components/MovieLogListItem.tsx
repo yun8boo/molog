@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { MovieLogType } from "../interfaces/movieLog";
 
 interface Props {
@@ -6,9 +5,10 @@ interface Props {
 }
 
 const MovieLogListItem = ({ movieLog }: Props) => {
+  const imgSrc = movieLog.imgSrc ? `https://image.tmdb.org/t/p/w500/${movieLog.imgSrc}` : '/no_image.png'
   return (
     <div className='flex flex-col shadow-md rounded'>
-      <Image width={100} height={300} src={'/movie-sample.jpg'} />
+      <img src={imgSrc} />
     </div>
   )
 }

@@ -6,7 +6,6 @@ const fetcher = (...args) => fetch('/api/movie_logs').then(res => res.json());
 
 const MovieLogs = () => {
   const { data, error } = useSWR<MovieLogType[] | undefined>('/api/movie_logs', fetcher)
-  console.log(data);
 
   if(error)return <p>error page</p>
 

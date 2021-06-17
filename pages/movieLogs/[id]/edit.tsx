@@ -8,7 +8,6 @@ const EditPage = () => {
   const onSubmit = (data) => {
     try {
       mutate(`/api/movie_logs/${id}`, async logs => {
-        console.log({logs});
         const body = JSON.stringify(data)
         await fetch(`/api/movie_logs/${id}`, {method: 'PATCH', body});
       })

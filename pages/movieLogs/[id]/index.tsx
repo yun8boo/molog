@@ -1,7 +1,6 @@
 import Link from 'next/link';
-import Image from 'next/image'
 import { useRouter } from 'next/router'
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 import { MovieLogType } from '../../../src/interfaces/movieLog';
 
 const fetcher = (...args) => fetch(`/api/movie_logs/${args[0]}`).then(res => res.json())
@@ -26,7 +25,7 @@ const MovieLog = () => {
 
   return (
     <div className='flex flex-col items-center'>
-      <Image width={200} height={240} src={'/movie-sample.jpg'} />
+      <img src={data.imgSrc ? `https://image.tmdb.org/t/p/w500/${data.imgSrc}` : '/no_image.png'} />
       <p>{data.title}</p>
       <p>{data.body}</p>
       <Link href={`/movieLogs/${id}/edit`}><a>編集</a></Link>

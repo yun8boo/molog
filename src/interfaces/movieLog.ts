@@ -4,4 +4,5 @@ export interface MovieLogType {
   createdAt: string
   id: string
   userId: string
+  imgSrc: string | null
 }

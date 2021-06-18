@@ -40,7 +40,10 @@ const IndexPage = () => {
   }
 
   const onChange = async (event) => {
-    if(event.target.value === "") return
+    if(event.target.value === "") {
+      setSearchMovie(null);
+      return
+    }
     lazyFUnction(() => requestMovieInfo(event.target.value), 400);
   }
 
@@ -53,13 +56,27 @@ const IndexPage = () => {
   )
 
   return (
-    <div className='flex flex-col items-center p-6'>
-      <Link href='/movieLogs'><a>movie_logs</a></Link>
+    <div className='content-container flex flex-col items-center justify-center p-6'>
+      <Link href='/movieLogs'><a className="text-purple-500 font-bold">Log List</a></Link>
       <h1>Logを残す</h1>
       <form className='flex flex-col' onSubmit={handleSubmit(onSubmit)}>
-        <input {...register("title")} placeholder="title" onChange={onChange} />
-        <input {...register("body")} placeholder="body" />
-        <input type="submit" className='cursor-pointer' />
+        <div className="mb-4">
+          <label className="block text-gray-500 font-bold mb-2 md:mb-0 pr-4" htmlFor="title">
+            Title
+          </label>
+          <div className="w-96">
+            <input {...register("title")} placeholder="title" onChange={onChange} id="title" className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" />
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-500 font-bold mb-2 md:mb-0 pr-4" htmlFor="title">
+            Body
+          </label>
+          <div className="w-96">
+            <input {...register("body")} placeholder="body" className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" />
+          </div>
+        </div>
+        <input type="submit" className='cursor-pointer shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded' />
       </form>
       <ul className='flex flex-wrap'>
         {

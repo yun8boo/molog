@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { ReactNode } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/client';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
   children?: ReactNode
@@ -13,7 +15,7 @@ const ProctedPage = ({children}: Props) => {
   if(!loading && !session) {
     return (
       <div className='flex flex-col items-center justify-center h-screen'>
-        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded shadow' onClick={() => signIn('google')}>Sign in with Google</button>
+        <button className='bg-purple-500 hover:bg-purple-700 text-white font-bold py-4 px-4 rounded shadow' onClick={() => signIn('google')}>Sign in with Google</button>
       </div>
     )
   }
@@ -21,7 +23,14 @@ const ProctedPage = ({children}: Props) => {
     <div>
       <header className='flex justify-between p-6 shadow'>
         <Link href='/'><a><span className='font-bold'>molog</span></a></Link>
-        <div>
+        <div className='flex items-center'>
+          <div>
+            <Link href="/add">
+              <a className="flex items-center mr-2">
+                <FontAwesomeIcon className="text-2xl" icon={faPlus} />
+              </a>
+            </Link>
+          </div>
           <button onClick={() => signOut()}>sign out</button>
         </div>
       </header>

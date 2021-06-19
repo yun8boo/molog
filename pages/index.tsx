@@ -1,98 +1,38 @@
-import Link from 'next/link';
-import { useState, useCallback } from 'react';
-import { useForm } from 'react-hook-form';
-import { mutate } from 'swr';
-import MovieListItem from '../src/components/MovieListItem';
-import { SearchMovieResponseType } from '../src/types/api/tmdb';
+import Link from 'next/link'
+import Image from 'next/image'
+import useSWR from 'swr';
+import MovieLogList from '../src/components/MovieLogList';
+import { MovieLogType } from '../src/interfaces/movieLog';
 
-let timeId: NodeJS.Timeout
-const IndexPage = () => {
-  const [searchMovie, setSearchMovie] = useState<SearchMovieResponseType | null>(null)
-  const [imgSrc, setImgSrc] = useState<string>("")
-  const {register, handleSubmit, setValue} = useForm()
-  const onSubmit = async (data) => {
-    try {
-      const body = {
-        ...data,
-        imgSrc
-      }
-      await fetch('/api/movie_logs', {method: 'POST', body: JSON.stringify(body)});
-      mutate('/api/movie_logs')
-    }catch {
-      console.log('error');
-    }
+const fetcher = (...args) => fetch('/api/movie_logs').then(res => res.json());
+
+const MovieLogs = () => {
+  const { data, error } = useSWR<MovieLogType[] | undefined>('/api/movie_logs', fetcher)
+
+  if(error)return <p>error page</p>
+
+  if(!data) return <p>loading...</p>
+
+  if(!data.length) {
+    return (
+      <div className="content-container flex items-center justify-center flex-col">
+        <div className="mb-4">
+          <Image src='/cinema.svg' height={500} width={500} />
+        </div>
+        <Link href="/add">
+          <a className="font-bold text-xl">
+            最初のログを残そう
+          </a>
+        </Link>
+      </div>
+    )
   }
-
-  const requestMovieInfo = async(title) => {
-    const url = `https://api.themoviedb.org/3/search/movie?query=${title}&api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`
-    const res = await fetch(url);
-    const json = await res.json()
-    if(!!json.total_results) {
-      setSearchMovie(json)
-    }
-  }
-
-  const lazyFUnction = (func: Function, ms: number) => {
-    clearTimeout(timeId)
-    timeId = setTimeout(() => {
-      func()
-    }, ms)
-  }
-
-  const onChange = async (event) => {
-    if(event.target.value === "") {
-      setSearchMovie(null);
-      return
-    }
-    lazyFUnction(() => requestMovieInfo(event.target.value), 400);
-  }
-
-  const movieOnClick = useCallback(
-    (title: string, imgSrc: string | null) => {
-      setImgSrc(imgSrc || '')
-      setValue("title", title)
-    },
-    [],
-  )
 
   return (
-    <div className='content-container flex flex-col items-center justify-center p-6'>
-      <Link href='/movieLogs'><a className="text-purple-500 font-bold">Log List</a></Link>
-      <h1>Logを残す</h1>
-      <form className='flex flex-col' onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-4">
-          <label className="block text-gray-500 font-bold mb-2 md:mb-0 pr-4" htmlFor="title">
-            Title
-          </label>
-          <div className="w-96">
-            <input {...register("title")} placeholder="title" onChange={onChange} id="title" className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" />
-          </div>
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-500 font-bold mb-2 md:mb-0 pr-4" htmlFor="title">
-            Body
-          </label>
-          <div className="w-96">
-            <input {...register("body")} placeholder="body" className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" />
-          </div>
-        </div>
-        <input type="submit" className='cursor-pointer shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded' />
-      </form>
-      <ul className='flex flex-wrap'>
-        {
-          searchMovie && (
-            searchMovie.results.map(result => {
-              return (
-                <li key={result.id} className='w-3/12'>
-                  <MovieListItem movie={result} movieOnClick={movieOnClick} />
-                </li>
-              )
-            })
-          )
-        }
-      </ul>
+    <div>
+      <MovieLogList movieLogs={data} />
     </div>
   )
 }
 
-export default IndexPage
+export default MovieLogs

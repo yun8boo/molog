@@ -26,7 +26,7 @@ const ProctedPage = ({children}: Props) => {
         <div className='flex items-center'>
           <div>
             <Link href="/add">
-              <a className="flex items-center mr-2">
+              <a className="flex items-center mr-2 text-purple-500">
                 <FontAwesomeIcon className="text-2xl" icon={faPlus} />
               </a>
             </Link>

@@ -59,13 +59,13 @@ const Add = () => {
   )
 
   return (
-    <div className='flex flex-col items-center p-6'>
-      <form className='flex flex-col' onSubmit={handleSubmit(onSubmit)}>
+    <div className='content-container flex p-6'>
+      <form className='flex flex-col justify-center w-2/4' onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
           <label className="block text-gray-500 font-bold mb-2 md:mb-0 pr-4" htmlFor="title">
             Title
           </label>
-          <div className="w-96">
+          <div>
             <input {...register("title")} placeholder="title" onChange={onChange} id="title" className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" />
           </div>
         </div>
@@ -73,25 +73,27 @@ const Add = () => {
           <label className="block text-gray-500 font-bold mb-2 md:mb-0 pr-4" htmlFor="title">
             Body
           </label>
-          <div className="w-96">
-            <input {...register("body")} placeholder="body" className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" />
+          <div>
+            <textarea {...register("body")} rows={20} className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" />
           </div>
         </div>
         <input type="submit" className='cursor-pointer shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded' />
       </form>
-      <ul className='flex flex-wrap'>
-        {
-          searchMovie && (
-            searchMovie.results.map(result => {
-              return (
-                <li key={result.id} className='w-3/12'>
-                  <MovieListItem movie={result} movieOnClick={movieOnClick} />
-                </li>
-              )
-            })
-          )
-        }
-      </ul>
+      <div className="ml-2 overflow-y-scroll w-2/4">
+        <ul className='flex flex-wrap items-center'>
+          {
+            searchMovie && (
+              searchMovie.results.map(result => {
+                return (
+                  <li key={result.id} className='w-1/3 sm:w-full'>
+                    <MovieListItem movie={result} movieOnClick={movieOnClick} />
+                  </li>
+                )
+              })
+            )
+          }
+        </ul>
+      </div>
     </div>
   )
 }

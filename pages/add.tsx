@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { mutate } from 'swr';
+import { useGetMovieLogs } from '../src/hooks/useGetMovieLogs';
 import MovieListItem from '../src/components/MovieListItem';
 import { SearchMovieResponseType } from '../src/types/api/tmdb';
 
@@ -17,8 +18,11 @@ const Add = () => {
         ...data,
         imgSrc
       }
-      await fetch('/api/movie_logs', {method: 'POST', body: JSON.stringify(body)});
-      await mutate('/api/movie_logs')
+      await mutate('/api/movie_logs', async movieLogs => {
+        const newMovieLog = await fetch('/api/movie_logs', {method: 'POST', body: JSON.stringify(body)});
+        const updatedMovieLogs = [...movieLogs, newMovieLog]
+        return updatedMovieLogs
+      })
       router.push('/')
     }catch {
       console.log('error');

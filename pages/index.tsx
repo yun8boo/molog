@@ -1,13 +1,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import useSWR from 'swr';
+import { useGetMovieLogs } from '../src/hooks/useGetMovieLogs'
 import MovieLogList from '../src/components/MovieLogList';
-import { MovieLogType } from '../src/interfaces/movieLog';
-
-const fetcher = (...args) => fetch('/api/movie_logs').then(res => res.json());
 
 const MovieLogs = () => {
-  const { data, error } = useSWR<MovieLogType[] | undefined>('/api/movie_logs', fetcher)
+  const { data, error } = useGetMovieLogs()
 
   if(error)return <p>error page</p>
 
